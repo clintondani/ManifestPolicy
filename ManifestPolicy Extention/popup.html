@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ManifestPolicy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ░░ SCANLINE TEXTURE OVERLAY ░░ -->
+  <div class="texture-overlay"></div>
+
+  <div class="popup-root">
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="header">
+      <div class="logo-mark">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L4 6V12C4 16.418 7.582 20.418 12 22C16.418 20.418 20 16.418 20 12V6L12 2Z" fill="none" stroke="#D5CEA3" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M9 12L11 14L15 10" stroke="#D5CEA3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 7H16" stroke="#D5CEA3" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h1 class="brand-name">ManifestPolicy</h1>
+        <p class="brand-sub">DPDP + Privacy Compliance Scanner</p>
+      </div>
+      <div class="status-dot" id="statusDot" title="Ready"></div>
+    </header>
+
+    <!-- ═══ DIVIDER ═══ -->
+    <div class="section-rule"></div>
+
+    <!-- ═══ SCAN CARD ═══ -->
+    <div class="scan-card" id="scanCard">
+      <div class="scan-card-inner">
+        <div class="scan-label">Current Page</div>
+        <div class="page-url-chip" id="pageUrlChip">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="pageUrlText">Loading...</span>
+        </div>
+        <button class="scan-btn" id="scanBtn">
+          <span class="scan-btn-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+          <span class="scan-btn-label">Scan This Page</span>
+          <span class="scan-btn-arrow">→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ LOADING STATE ═══ -->
+    <div class="loading-state" id="loadingState" style="display:none;">
+      <div class="loader-track">
+        <div class="loader-fill" id="loaderFill"></div>
+      </div>
+      <p class="loading-caption">Analysing policy content…</p>
+    </div>
+
+    <!-- ═══ RESULT BADGE ═══ -->
+    <div class="result-section" id="resultSection" style="display:none;">
+      <div class="result-badge" id="resultBadge">
+        <span class="badge-icon" id="badgeIcon"></span>
+        <div class="badge-text">
+          <div class="badge-title" id="badgeTitle"></div>
+          <div class="badge-meta" id="badgeMeta"></div>
+        </div>
+        <div class="badge-score" id="badgeScore"></div>
+      </div>
+
+      <!-- ── Metrics Row ── -->
+      <div class="metrics-row" id="metricsRow" style="display:none;">
+        <div class="metric-cell" id="metricShady">
+          <div class="metric-val" id="shadyVal">0</div>
+          <div class="metric-lbl">Shady Clauses</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-cell" id="metricDpdp">
+          <div class="metric-val" id="dpdpVal">0</div>
+          <div class="metric-lbl">DPDP Violations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ SUMMARY BOX ═══ -->
+    <div class="summary-section" id="summarySection" style="display:none;">
+      <div class="summary-header">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Policy Summary
+      </div>
+      <div class="summary-body" id="summaryBody"></div>
+    </div>
+
+    <!-- ═══ REDIRECT HINT ═══ -->
+    <div class="redirect-hint" id="redirectHint" style="display:none;">
+      <div class="redirect-inner">
+        <span class="redirect-icon">⇢</span>
+        <span id="redirectText">No privacy policy detected on this page.</span>
+        <a href="#" class="redirect-link" id="openPrivacy" style="display:none;">Open Privacy Policy</a>
+      </div>
+    </div>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="footer">
+      <span>ManifestPolicy</span>
+      <span class="footer-dot">·</span>
+      <span>v1.0</span>
+      <span class="footer-dot">·</span>
+      <span>DPDP Act 2023</span>
+    </footer>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

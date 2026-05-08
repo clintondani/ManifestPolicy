@@ -1,0 +1,13 @@
+Privacy Policy – Example Corp
+
+At Example Corp, we value your privacy. However, we may share your personal information with third parties, including advertisers, partners, or affiliates, for marketing or analytical purposes.
+
+We collect data such as your location, usage patterns, and device identifiers without any prior notice. Our system may track your behavior even when you're not actively using our services.
+
+There is currently no mechanism for users to withdraw their consent or delete their data.
+
+We are not responsible for any data breaches that may occur on our platform or through our partners.
+
+The purpose for which data is collected is not always specified, and some data may be retained indefinitely.
+
+No grievance officer has been appointed for handling data-related concerns.

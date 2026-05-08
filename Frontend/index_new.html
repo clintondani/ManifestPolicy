@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ManifestPolicy – Privacy Policy Compliance Scanner</title>
+  <link rel="stylesheet" href="style_new.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7V12C2 17.55 6.84 22.74 12 24C17.16 22.74 22 17.55 22 12V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="logo-text">ManifestPolicy</h1>
+          <p class="logo-subtitle">DPDP Compliance Scanner</p>
+        </div>
+      </div>
+      <div class="user-section" id="userSection">
+        <span class="user-name" id="userName">Guest</span>
+        <button class="btn-secondary btn-sm" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h2 class="hero-title">Analyze Privacy Policies for Compliance</h2>
+      <p class="hero-description">
+        Scan privacy policies for shady clauses and DPDP Act violations. 
+        Get instant insights with AI-powered analysis.
+      </p>
+    </section>
+
+    <!-- Scanner Card -->
+    <section class="scanner-card glass-card">
+      <div class="card-header">
+        <h3 class="card-title">Privacy Policy Scanner</h3>
+        <div class="status-badge status-ready">
+          <span class="status-dot"></span>
+          Ready to Scan
+        </div>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="text" onclick="switchTab('text')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+            <polyline points="14 2 14 8 20 8" stroke-width="2"/>
+            <line x1="16" y1="13" x2="8" y2="13" stroke-width="2"/>
+            <line x1="16" y1="17" x2="8" y2="17" stroke-width="2"/>
+          </svg>
+          Text / URL
+        </button>
+        <button class="tab-btn" data-tab="file" onclick="switchTab('file')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-width="2"/>
+            <polyline points="17 8 12 3 7 8" stroke-width="2"/>
+            <line x1="12" y1="3" x2="12" y2="15" stroke-width="2"/>
+          </svg>
+          Upload File
+        </button>
+      </div>
+
+      <!-- Text Tab Content -->
+      <div id="textTab" class="tab-content active">
+        <div class="input-group">
+          <label for="policyText" class="input-label">
+            Paste Privacy Policy Text or URL
+          </label>
+          <textarea 
+            id="policyText" 
+            class="input-textarea" 
+            rows="8" 
+            placeholder="Paste the privacy policy text here or enter a URL to fetch the policy automatically...&#10;&#10;Example: https://example.com/privacy-policy"
+          ></textarea>
+          <div class="input-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" stroke-width="2"/>
+              <line x1="12" y1="16" x2="12" y2="12" stroke-width="2"/>
+              <line x1="12" y1="8" x2="12.01" y2="8" stroke-width="2"/>
+            </svg>
+            Supports plain text or direct URLs to privacy policies
+          </div>
+        </div>
+        <button id="scanTextBtn" class="btn-primary btn-lg" onclick="scanText()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="11" cy="11" r="8" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke-width="2"/>
+          </svg>
+          Scan Policy
+        </button>
+      </div>
+
+      <!-- File Tab Content -->
+      <div id="fileTab" class="tab-content">
+        <div class="file-upload-area" id="fileUploadArea">
+          <input type="file" id="policyFile" accept=".txt,.pdf,.docx" hidden />
+          <div class="upload-icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-width="2"/>
+              <polyline points="17 8 12 3 7 8" stroke-width="2"/>
+              <line x1="12" y1="3" x2="12" y2="15" stroke-width="2"/>
+            </svg>
+          </div>
+          <p class="upload-text">Drop your file here or click to browse</p>
+          <p class="upload-subtext">Supports .txt, .pdf, .docx files</p>
+          <button class="btn-secondary" onclick="document.getElementById('policyFile').click()">
+            Choose File
+          </button>
+        </div>
+        <div id="selectedFile" class="selected-file" style="display: none;">
+          <div class="file-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14 2 14 8 20 8" stroke-width="2"/>
+            </svg>
+            <span id="fileName">document.pdf</span>
+          </div>
+          <button class="btn-remove" onclick="removeFile()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <line x1="18" y1="6" x2="6" y2="18" stroke-width="2"/>
+              <line x1="6" y1="6" x2="18" y2="18" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+        <button id="scanFileBtn" class="btn-primary btn-lg" onclick="uploadFile()" style="margin-top: 1rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="11" cy="11" r="8" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke-width="2"/>
+          </svg>
+          Scan File
+        </button>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="loading-state" style="display: none;">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Analyzing privacy policy...</p>
+    </div>
+
+    <!-- Results Section -->
+    <section id="resultsSection" class="results-section" style="display: none;">
+      <div class="results-header">
+        <h3 class="results-title">Scan Results</h3>
+        <div id="resultStatus" class="status-badge status-warning">
+          <span class="status-dot"></span>
+          Issues Found
+        </div>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="summary-card glass-card">
+        <h4 class="section-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+            <polyline points="14 2 14 8 20 8" stroke-width="2"/>
+          </svg>
+          Policy Summary
+        </h4>
+        <div id="summaryContent" class="summary-content">
+          <!-- Summary will be injected here -->
+        </div>
+      </div>
+
+      <!-- Issues Grid -->
+      <div class="issues-grid">
+        <!-- Shady Clauses -->
+        <div class="issue-card glass-card">
+          <div class="issue-header">
+            <h4 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2"/>
+                <line x1="12" y1="9" x2="12" y2="13" stroke-width="2"/>
+                <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2"/>
+              </svg>
+              Shady Clauses
+            </h4>
+            <span id="shadyCount" class="count-badge">0</span>
+          </div>
+          <div id="shadyClausesList" class="issues-list">
+            <!-- Issues will be injected here -->
+          </div>
+        </div>
+
+        <!-- DPDP Violations -->
+        <div class="issue-card glass-card">
+          <div class="issue-header">
+            <h4 class="section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <line x1="15" y1="9" x2="9" y2="15" stroke-width="2"/>
+                <line x1="9" y1="9" x2="15" y2="15" stroke-width="2"/>
+              </svg>
+              DPDP Violations
+            </h4>
+            <span id="dpdpCount" class="count-badge">0</span>
+          </div>
+          <div id="dpdpViolationsList" class="issues-list">
+            <!-- Issues will be injected here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- History Section -->
+    <section class="history-section">
+      <div class="section-header">
+        <h3 class="section-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <polyline points="12 6 12 12 16 14" stroke-width="2"/>
+          </svg>
+          Scan History
+        </h3>
+        <button class="btn-secondary btn-sm" onclick="loadReports()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polyline points="23 4 23 10 17 10" stroke-width="2"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" stroke-width="2"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+      <div id="reportsList" class="reports-grid">
+        <!-- Reports will be injected here -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p class="footer-text">
+        © 2026 ManifestPolicy. Ensuring digital privacy compliance.
+      </p>
+      <div class="footer-links">
+        <a href="#" class="footer-link">About</a>
+        <a href="#" class="footer-link">Privacy</a>
+        <a href="#" class="footer-link">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script_new.js"></script>
+</body>
+</html>

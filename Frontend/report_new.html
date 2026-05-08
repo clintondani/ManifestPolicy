@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Report Details – ManifestPolicy</title>
+  <link rel="stylesheet" href="style_new.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7V12C2 17.55 6.84 22.74 12 24C17.16 22.74 22 17.55 22 12V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="logo-text">ManifestPolicy</h1>
+          <p class="logo-subtitle">Report Details</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    <div class="report-detail-container">
+      <!-- Back Button -->
+      <button class="btn-secondary" onclick="goBack()" style="margin-bottom: 2rem;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="19" y1="12" x2="5" y2="12" stroke-width="2"/>
+          <polyline points="12 19 5 12 12 5" stroke-width="2"/>
+        </svg>
+        Back to Scanner
+      </button>
+
+      <!-- Loading State -->
+      <div id="loadingState" class="loading-state">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Loading report...</p>
+      </div>
+
+      <!-- Report Content -->
+      <div id="reportContent" style="display: none;">
+        <!-- Report Header Card -->
+        <div class="glass-card" style="margin-bottom: 2rem;">
+          <div class="report-meta-header">
+            <div>
+              <h2 class="report-meta-title" id="reportTitle">Report #0</h2>
+              <p class="report-meta-timestamp" id="reportTimestamp">—</p>
+            </div>
+            <button class="btn-primary" onclick="downloadPDF()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke-width="2"/>
+                <polyline points="7 10 12 15 17 10" stroke-width="2"/>
+                <line x1="12" y1="15" x2="12" y2="3" stroke-width="2"/>
+              </svg>
+              Download PDF
+            </button>
+          </div>
+          
+          <div class="report-meta-details" id="reportMetaDetails">
+            <!-- Meta details will be injected here -->
+          </div>
+        </div>
+
+        <!-- Summary Card -->
+        <div class="summary-card glass-card" style="margin-bottom: 2rem;">
+          <h4 class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke-width="2"/>
+              <polyline points="14 2 14 8 20 8" stroke-width="2"/>
+            </svg>
+            Policy Summary
+          </h4>
+          <div id="summaryContent" class="summary-content">
+            <!-- Summary will be injected here -->
+          </div>
+        </div>
+
+        <!-- Issues Grid -->
+        <div class="issues-grid">
+          <!-- Shady Clauses -->
+          <div class="issue-card glass-card">
+            <div class="issue-header">
+              <h4 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" stroke-width="2"/>
+                  <line x1="12" y1="9" x2="12" y2="13" stroke-width="2"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17" stroke-width="2"/>
+                </svg>
+                Shady Clauses
+              </h4>
+              <span id="shadyCount" class="count-badge">0</span>
+            </div>
+            <div id="shadyClausesList" class="issues-list">
+              <!-- Issues will be injected here -->
+            </div>
+          </div>
+
+          <!-- DPDP Violations -->
+          <div class="issue-card glass-card">
+            <div class="issue-header">
+              <h4 class="section-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                  <line x1="15" y1="9" x2="9" y2="15" stroke-width="2"/>
+                  <line x1="9" y1="9" x2="15" y2="15" stroke-width="2"/>
+                </svg>
+                DPDP Violations
+              </h4>
+              <span id="dpdpCount" class="count-badge">0</span>
+            </div>
+            <div id="dpdpViolationsList" class="issues-list">
+              <!-- Issues will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="errorState" style="display: none; text-align: center; padding: 3rem;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="color: var(--color-danger); margin-bottom: 1rem;">
+          <circle cx="12" cy="12" r="10" stroke-width="2"/>
+          <line x1="15" y1="9" x2="9" y2="15" stroke-width="2"/>
+          <line x1="9" y1="9" x2="15" y2="15" stroke-width="2"/>
+        </svg>
+        <h3 style="color: var(--color-light); margin-bottom: 0.5rem;">Report Not Found</h3>
+        <p style="color: var(--color-tertiary);" id="errorMessage">Unable to load this report.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <p class="footer-text">
+        © 2026 ManifestPolicy. Ensuring digital privacy compliance.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const backendUrl = "http://localhost:5000";
+    let currentReportId = null;
+
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    async function loadReport() {
+      const id = getQueryParam('id');
+      if (!id) {
+        showError('No report ID provided');
+        return;
+      }
+
+      currentReportId = id;
+
+      try {
+        const response = await fetch(`${backendUrl}/report/${id}`);
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          showError(data.error || 'Failed to load report');
+          return;
+        }
+
+        displayReport(data);
+      } catch (error) {
+        console.error('Error loading report:', error);
+        showError('Failed to load report. Please check your connection.');
+      }
+    }
+
+    function displayReport(data) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('reportContent').style.display = 'block';
+
+      // Report header
+      document.getElementById('reportTitle').textContent = `Report #${data.id}`;
+      const timestamp = new Date(data.timestamp).toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      document.getElementById('reportTimestamp').textContent = timestamp;
+
+      // Meta details
+      let metaHTML = `
+        <div class="report-meta-item">
+          <span class="report-meta-label">User</span>
+          <span class="report-meta-value">${data.username || 'Guest'}</span>
+        </div>
+        <div class="report-meta-item">
+          <span class="report-meta-label">Type</span>
+          <span class="report-meta-value">${data.input_type}</span>
+        </div>
+      `;
+      if (data.filename) {
+        metaHTML += `
+          <div class="report-meta-item">
+            <span class="report-meta-label">File</span>
+            <span class="report-meta-value">${data.filename}</span>
+          </div>
+        `;
+      }
+      document.getElementById('reportMetaDetails').innerHTML = metaHTML;
+
+      // Summary
+      displaySummary(data.summary);
+
+      // Shady clauses
+      displayShadyClauses(data.shady_clauses || []);
+
+      // DPDP violations
+      displayDPDPViolations(data.dpdp_violations || []);
+    }
+
+    function displaySummary(summary) {
+      const summaryContent = document.getElementById('summaryContent');
+      
+      if (!summary || typeof summary !== 'object') {
+        summaryContent.innerHTML = '<p class="no-issues">Summary not available</p>';
+        return;
+      }
+      
+      const summaryItems = [
+        { title: "Overview", key: "overview" },
+        { title: "Data Collected", key: "data_collected" },
+        { title: "Data Sharing", key: "data_sharing" },
+        { title: "User Rights", key: "user_rights" },
+        { title: "Data Retention", key: "data_retention" }
+      ];
+      
+      let html = '';
+      summaryItems.forEach(item => {
+        const value = summary[item.key] || "Not clearly stated";
+        html += `
+          <div class="summary-item">
+            <div class="summary-item-title">${item.title}</div>
+            <div class="summary-item-text">${value}</div>
+          </div>
+        `;
+      });
+      
+      summaryContent.innerHTML = html;
+    }
+
+    function displayShadyClauses(clauses) {
+      const list = document.getElementById('shadyClausesList');
+      const count = document.getElementById('shadyCount');
+      
+      count.textContent = clauses.length;
+      
+      if (clauses.length === 0) {
+        list.innerHTML = '<div class="no-issues">✅ No shady clauses detected</div>';
+        return;
+      }
+      
+      let html = '';
+      clauses.forEach(item => {
+        const clause = item.clause || item;
+        const reason = item.reason || '';
+        
+        html += `
+          <div class="issue-item">
+            <div class="issue-title">${clause}</div>
+            ${reason ? `<div class="issue-description">${reason}</div>` : ''}
+          </div>
+        `;
+      });
+      
+      list.innerHTML = html;
+    }
+
+    function displayDPDPViolations(violations) {
+      const list = document.getElementById('dpdpViolationsList');
+      const count = document.getElementById('dpdpCount');
+      
+      count.textContent = violations.length;
+      
+      if (violations.length === 0) {
+        list.innerHTML = '<div class="no-issues">✅ No DPDP violations detected</div>';
+        return;
+      }
+      
+      let html = '';
+      violations.forEach(item => {
+        const violation = item.violation || item;
+        const description = item.description || '';
+        const section = item.section || '';
+        
+        html += `
+          <div class="issue-item danger">
+            <div class="issue-title">${violation}</div>
+            ${description ? `<div class="issue-description">${description}</div>` : ''}
+            ${section ? `<div class="issue-section">${section}</div>` : ''}
+          </div>
+        `;
+      });
+      
+      list.innerHTML = html;
+    }
+
+    function showError(message) {
+      document.getElementById('loadingState').style.display = 'none';
+      document.getElementById('errorState').style.display = 'block';
+      document.getElementById('errorMessage').textContent = message;
+    }
+
+    function downloadPDF() {
+      if (currentReportId) {
+        window.location.href = `${backendUrl}/download/${currentReportId}`;
+      }
+    }
+
+    function goBack() {
+      window.close();
+      // Fallback if window.close() doesn't work
+      setTimeout(() => {
+        window.location.href = 'index_new.html';
+      }, 100);
+    }
+
+    // Load report on page load
+    window.onload = loadReport;
+  </script>
+
+  <style>
+    .report-detail-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .report-meta-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(213, 206, 163, 0.15);
+    }
+
+    .report-meta-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .report-meta-timestamp {
+      font-size: 0.875rem;
+      color: var(--color-tertiary);
+    }
+
+    .report-meta-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .report-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .report-meta-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--color-tertiary);
+    }
+
+    .report-meta-value {
+      font-size: 0.875rem;
+      color: var(--color-light);
+      font-weight: 500;
+    }
+
+    @media (max-width: 768px) {
+      .report-meta-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .report-meta-header button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .report-detail-container {
+        padding: 0;
+      }
+
+      .report-meta-title {
+        font-size: 1.5rem;
+      }
+
+      .report-meta-timestamp {
+        font-size: 0.8125rem;
+      }
+
+      .glass-card {
+        padding: 1rem;
+        border-radius: 10px;
+      }
+
+      .report-meta-details {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .issues-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .report-meta-title {
+        font-size: 1.25rem;
+      }
+
+      .section-title {
+        font-size: 1rem;
+      }
+
+      .glass-card {
+        padding: 0.75rem;
+      }
+    }
+  </style>
+</body>
+</html>

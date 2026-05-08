@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "ManifestPolicy DPDP Scanner",
+  "description": "Scan privacy policies for shady clauses and DPDP Act violations.",
+  "version": "1.0",
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["http://127.0.0.1:5000/*"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ]
+}
